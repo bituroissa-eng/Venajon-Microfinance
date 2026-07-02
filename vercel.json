@@ -5,8 +5,6 @@
       "runtime": "vercel-php@0.7.0"
     }
   },
-  "buildCommand": "composer install --no-interaction --prefer-dist && php artisan migrate --force && npm install && npm run build",
-  "outputDirectory": "public",
   "routes": [
     { "src": "/(.*)", "dest": "/api/index.php" }
   ]
