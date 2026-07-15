@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "node -e \"process.env.VERCEL ? console.log('Skipping Vite build on Vercel') : require('child_process').execSync('vite build', { stdio: 'inherit' })\"",
+        "build": "vite build",
         "dev": "vite"
     },
     "devDependencies": {
