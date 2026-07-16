@@ -25,30 +25,41 @@ $envPath = __DIR__ . '/../.env';
 $envExamplePath = __DIR__ . '/../.env.example';
 
 if (!file_exists($envPath) && file_exists($envExamplePath)) {
-    copy($envExamplePath, $envPath);
+    // The application source is read-only in Vercel runtime.
+    // Do not copy .env at runtime. Environment variables should be configured in Vercel.
 }
 
 if ($isVercel) {
-    $_ENV['APP_ENV'] = $_ENV['APP_ENV'] ?? 'production';
-    $_ENV['APP_DEBUG'] = $_ENV['APP_DEBUG'] ?? 'false';
-    $_ENV['APP_URL'] = $_ENV['APP_URL'] ?? (getenv('VERCEL_URL') ? 'https://' . getenv('VERCEL_URL') : 'https://localhost');
-    $_ENV['LOG_LEVEL'] = $_ENV['LOG_LEVEL'] ?? 'warning';
-    $_ENV['DB_CONNECTION'] = $_ENV['DB_CONNECTION'] ?? 'sqlite';
-    $_ENV['DB_DATABASE'] = $_ENV['DB_DATABASE'] ?? $storagePath . '/database.sqlite';
-    $_ENV['SESSION_DRIVER'] = $_ENV['SESSION_DRIVER'] ?? 'file';
-    $_ENV['CACHE_STORE'] = $_ENV['CACHE_STORE'] ?? 'file';
-    $_ENV['QUEUE_CONNECTION'] = $_ENV['QUEUE_CONNECTION'] ?? 'sync';
-    $_ENV['FILESYSTEM_DISK'] = $_ENV['FILESYSTEM_DISK'] ?? 'local';
+    $runtimeDefaults = [
+        'APP_ENV' => 'production',
+        'APP_DEBUG' => 'false',
+        'APP_URL' => getenv('APP_URL') ?: (getenv('VERCEL_URL') ? 'https://' . getenv('VERCEL_URL') : 'https://localhost'),
+        'LOG_LEVEL' => 'warning',
+        'DB_CONNECTION' => 'sqlite',
+        'DB_DATABASE' => $storagePath . '/database.sqlite',
+        'SESSION_DRIVER' => 'file',
+        'CACHE_STORE' => 'file',
+        'QUEUE_CONNECTION' => 'sync',
+        'FILESYSTEM_DISK' => 'local',
+    ];
+
+    foreach ($runtimeDefaults as $key => $value) {
+        if (getenv($key) === false) {
+            $_ENV[$key] = $value;
+            $_SERVER[$key] = $value;
+            putenv("{$key}={$value}");
+        }
+    }
+
+    if (!getenv('APP_KEY')) {
+        $appKey = 'base64:' . base64_encode(random_bytes(32));
+        $_ENV['APP_KEY'] = $appKey;
+        $_SERVER['APP_KEY'] = $appKey;
+        putenv("APP_KEY={$appKey}");
+    }
 
     if (!file_exists($_ENV['DB_DATABASE'])) {
         touch($_ENV['DB_DATABASE']);
-    }
-
-    if (file_exists($envPath)) {
-        $envContents = file_get_contents($envPath);
-        if (!preg_match('/^APP_KEY=.+/m', $envContents)) {
-            exec('php ' . escapeshellarg(__DIR__ . '/../artisan') . ' key:generate --force');
-        }
     }
 
     $migratedMarker = $storagePath . '/.migrated';
