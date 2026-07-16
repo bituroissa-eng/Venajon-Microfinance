@@ -2,11 +2,10 @@
   "version": 2,
   "functions": {
     "api/index.php": {
-      "runtime": "vercel-php@0.7.2"
+      "runtime": "vercel-php@0.8.0"
     }
   },
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": "public",
+  "buildCommand": "node -e \"console.log('Assets pre-built locally, skipping build step')\"",
   "routes": [
     { "src": "/build/(.*)", "dest": "/build/$1" },
     { "src": "/images/(.*)", "dest": "/images/$1" },

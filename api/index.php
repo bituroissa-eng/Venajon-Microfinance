@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 $isVercel = getenv('VERCEL') || getenv('VERCEL_URL');
 $storagePath = getenv('STORAGE_PATH') ?: ($isVercel ? '/tmp/storage' : __DIR__ . '/../storage');
@@ -39,7 +41,7 @@ if ($isVercel) {
 
     $runtimeDefaults = [
         'APP_ENV' => 'production',
-        'APP_DEBUG' => 'false',
+        'APP_DEBUG' => 'true',
         'APP_URL' => $appUrl,
         'LOG_LEVEL' => 'warning',
         'DB_CONNECTION' => 'sqlite',
@@ -72,7 +74,7 @@ if ($isVercel) {
         putenv("APP_KEY={$appKey}");
     }
 
-    if (!file_exists($_ENV['DB_DATABASE'])) {
+    if ($_ENV['DB_CONNECTION'] === 'sqlite' && !file_exists($_ENV['DB_DATABASE'])) {
         touch($_ENV['DB_DATABASE']);
     }
 
