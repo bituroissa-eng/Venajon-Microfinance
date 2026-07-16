@@ -30,10 +30,17 @@ if (!file_exists($envPath) && file_exists($envExamplePath)) {
 }
 
 if ($isVercel) {
+    $host = getenv('APP_URL') ?: (getenv('VERCEL_URL') ?: ($_SERVER['HTTP_HOST'] ?? null));
+    $proto = getenv('HTTP_X_FORWARDED_PROTO') ?: getenv('REQUEST_SCHEME') ?: strtolower(($_SERVER['HTTPS'] ?? '') === 'on' ? 'https' : 'http');
+    if (!$host) {
+        $host = 'localhost';
+    }
+    $appUrl = str_starts_with($host, 'http') ? $host : ($proto . '://' . $host);
+
     $runtimeDefaults = [
         'APP_ENV' => 'production',
         'APP_DEBUG' => 'false',
-        'APP_URL' => getenv('APP_URL') ?: (getenv('VERCEL_URL') ? 'https://' . getenv('VERCEL_URL') : 'https://localhost'),
+        'APP_URL' => $appUrl,
         'LOG_LEVEL' => 'warning',
         'DB_CONNECTION' => 'sqlite',
         'DB_DATABASE' => $storagePath . '/database.sqlite',
@@ -51,8 +58,15 @@ if ($isVercel) {
         }
     }
 
-    if (!getenv('APP_KEY')) {
+    $appKeyFile = $storagePath . '/appkey';
+    if (file_exists($appKeyFile)) {
+        $appKey = trim(file_get_contents($appKeyFile));
+    } else {
         $appKey = 'base64:' . base64_encode(random_bytes(32));
+        file_put_contents($appKeyFile, $appKey);
+    }
+
+    if (!getenv('APP_KEY')) {
         $_ENV['APP_KEY'] = $appKey;
         $_SERVER['APP_KEY'] = $appKey;
         putenv("APP_KEY={$appKey}");
