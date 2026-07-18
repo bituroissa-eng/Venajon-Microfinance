@@ -3,7 +3,11 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 $isVercel = getenv('VERCEL') || getenv('VERCEL_URL');
-$storagePath = getenv('STORAGE_PATH') ?: ($isVercel ? '/tmp/storage' : __DIR__ . '/../storage');
+$storagePath = '/tmp/storage';
+
+if (!$isVercel) {
+    $storagePath = __DIR__ . '/../storage';
+}
 
 $directories = [
     $storagePath . '/app/public',
@@ -15,103 +19,86 @@ $directories = [
 ];
 
 foreach ($directories as $dir) {
-    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
-        throw new RuntimeException("Unable to create storage directory: {$dir}");
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
     }
 }
 
+putenv("STORAGE_PATH={$storagePath}");
 $_ENV['STORAGE_PATH'] = $storagePath;
 $_SERVER['STORAGE_PATH'] = $storagePath;
 
 if ($isVercel) {
-    $vercelUrl = getenv('VERCEL_URL') ?: ($_SERVER['HTTP_HOST'] ?? null);
+    // Determine APP_URL
+    $vercelUrl = getenv('VERCEL_URL') ?: ($_SERVER['HTTP_HOST'] ?? 'localhost');
     $appUrlEnv = getenv('APP_URL');
 
     if ($appUrlEnv && str_starts_with($appUrlEnv, 'http')) {
         $appUrl = rtrim($appUrlEnv, '/');
-    } elseif ($vercelUrl) {
+    } else {
         $host = preg_replace('#^https?://#', '', $vercelUrl);
         $host = trim($host, '/');
         $appUrl = 'https://' . $host;
-    } else {
-        $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
-        $host = trim($host);
-        if ($host === '' || $host === ':' || $host === 'http:' || $host === 'https:') {
-            $host = 'localhost';
-        }
-        $proto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? $_SERVER['REQUEST_SCHEME'] ?? 'https';
-        $proto = strtolower($proto) === 'http' ? 'http' : 'https';
-        $appUrl = $proto . '://' . $host;
     }
 
-    if (!isset($_SERVER['HTTP_HOST']) || empty($_SERVER['HTTP_HOST'])) {
+    // Fix SERVER vars for Laravel
+    if (empty($_SERVER['HTTP_HOST'])) {
         $parsedUrl = parse_url($appUrl);
-        if ($parsedUrl !== false && isset($parsedUrl['host'])) {
-            $_SERVER['HTTP_HOST'] = $parsedUrl['host'] . (isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '');
-            $_SERVER['SERVER_NAME'] = $parsedUrl['host'];
-            $_SERVER['REQUEST_SCHEME'] = $parsedUrl['scheme'] ?? 'https';
-            $_SERVER['HTTPS'] = ($parsedUrl['scheme'] ?? '') === 'https' ? 'on' : 'off';
-        }
+        $_SERVER['HTTP_HOST'] = $parsedUrl['host'] ?? 'localhost';
+        $_SERVER['SERVER_NAME'] = $parsedUrl['host'] ?? 'localhost';
+        $_SERVER['REQUEST_SCHEME'] = $parsedUrl['scheme'] ?? 'https';
+        $_SERVER['HTTPS'] = 'on';
     }
 
-    $runtimeDefaults = [
-        'APP_ENV' => 'production',
-        'APP_DEBUG' => 'true',
-        'APP_URL' => $appUrl,
-        'LOG_CHANNEL' => 'stderr',
-        'LOG_LEVEL' => 'warning',
-        'DB_CONNECTION' => 'sqlite',
-        'DB_DATABASE' => $storagePath . '/database.sqlite',
-        'SESSION_DRIVER' => 'cookie',
-        'CACHE_STORE' => 'array',
-        'QUEUE_CONNECTION' => 'sync',
-        'FILESYSTEM_DISK' => 'local',
+    // Set fallback defaults only if not already set in Vercel env vars
+    $defaults = [
+        'APP_ENV'            => 'production',
+        'APP_DEBUG'          => 'true',
+        'APP_URL'            => $appUrl,
+        'LOG_CHANNEL'        => 'stderr',
+        'LOG_LEVEL'          => 'debug',
+        'SESSION_DRIVER'     => 'cookie',
+        'CACHE_STORE'        => 'array',
+        'QUEUE_CONNECTION'   => 'sync',
+        'FILESYSTEM_DISK'    => 'local',
         'VIEW_COMPILED_PATH' => $storagePath . '/framework/views',
-        'APP_CONFIG_CACHE' => $storagePath . '/config.php',
-        'APP_ROUTES_CACHE' => $storagePath . '/routes.php',
-        'APP_EVENTS_CACHE' => $storagePath . '/events.php',
-        'APP_SERVICES_CACHE' => $storagePath . '/services.php',
     ];
 
-    foreach ($runtimeDefaults as $key => $value) {
+    foreach ($defaults as $key => $value) {
         $existing = getenv($key);
         if ($existing === false || $existing === '') {
+            putenv("{$key}={$value}");
             $_ENV[$key] = $value;
             $_SERVER[$key] = $value;
-            putenv("{$key}={$value}");
         }
     }
 
-    $appKeyFile = $storagePath . '/appkey';
-    if (file_exists($appKeyFile)) {
-        $appKey = trim(file_get_contents($appKeyFile));
-    } else {
-        $appKey = 'base64:' . base64_encode(random_bytes(32));
-        file_put_contents($appKeyFile, $appKey);
-    }
-
-    $existingAppKey = getenv('APP_KEY');
-    if ($existingAppKey === false || $existingAppKey === '') {
+    // Generate and persist APP_KEY if not set
+    $existingKey = getenv('APP_KEY');
+    if ($existingKey === false || $existingKey === '') {
+        $appKeyFile = $storagePath . '/appkey';
+        if (file_exists($appKeyFile)) {
+            $appKey = trim(file_get_contents($appKeyFile));
+        } else {
+            $appKey = 'base64:' . base64_encode(random_bytes(32));
+            file_put_contents($appKeyFile, $appKey);
+        }
+        putenv("APP_KEY={$appKey}");
         $_ENV['APP_KEY'] = $appKey;
         $_SERVER['APP_KEY'] = $appKey;
-        putenv("APP_KEY={$appKey}");
     }
 
-    if ($_ENV['DB_CONNECTION'] === 'sqlite' && !file_exists($_ENV['DB_DATABASE'])) {
-        touch($_ENV['DB_DATABASE']);
-    }
-
+    // Run migrations once (skipped if Supabase env vars already set and migrated)
     $migratedMarker = $storagePath . '/.migrated';
-    if (!file_exists($migratedMarker)) {
+    $dbConnection = getenv('DB_CONNECTION');
+    if (!file_exists($migratedMarker) && $dbConnection && $dbConnection !== '') {
+        $phpBinary = PHP_BINARY ?: 'php';
+        $artisan = escapeshellarg(__DIR__ . '/../artisan');
         $output = [];
         $status = 0;
-        $artisan = escapeshellarg(__DIR__ . '/../artisan');
-        $phpBinary = defined('PHP_BINARY') ? PHP_BINARY : 'php';
-
         exec(escapeshellarg($phpBinary) . ' ' . $artisan . ' migrate --force 2>&1', $output, $status);
         if ($status === 0) {
-            exec(escapeshellarg($phpBinary) . ' ' . $artisan . ' db:seed --force 2>&1', $output, $status);
-            file_put_contents($migratedMarker, 'migrated');
+            file_put_contents($migratedMarker, date('Y-m-d H:i:s'));
         } else {
             error_log('Artisan migrate failed: ' . implode("\n", $output));
         }
