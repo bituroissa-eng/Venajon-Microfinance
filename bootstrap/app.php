@@ -21,10 +21,8 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })->create();
 
-// On Vercel, the filesystem is read-only except for /tmp.
-// Always use /tmp/storage if the normal storage path is not writable.
-$normalStorage = dirname(__DIR__) . '/storage';
-if (!is_writable($normalStorage) && is_writable('/tmp')) {
+$isVercel = isset($_ENV['VERCEL']) || getenv('VERCEL') || isset($_SERVER['VERCEL_URL']) || str_starts_with(__DIR__, '/var/task');
+if ($isVercel) {
     $app->useStoragePath('/tmp/storage');
 }
 

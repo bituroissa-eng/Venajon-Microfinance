@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$isVercel = getenv('VERCEL') || getenv('VERCEL_URL');
+$isVercel = isset($_ENV['VERCEL']) || getenv('VERCEL') || isset($_SERVER['VERCEL_URL']) || str_starts_with(__DIR__, '/var/task');
 $storagePath = '/tmp/storage';
 
 if (!$isVercel) {
@@ -16,6 +16,7 @@ $directories = [
     $storagePath . '/framework/testing',
     $storagePath . '/framework/views',
     $storagePath . '/logs',
+    $storagePath . '/bootstrap/cache',
 ];
 
 foreach ($directories as $dir) {
@@ -62,6 +63,11 @@ if ($isVercel) {
         'QUEUE_CONNECTION'   => 'sync',
         'FILESYSTEM_DISK'    => 'local',
         'VIEW_COMPILED_PATH' => $storagePath . '/framework/views',
+        'APP_SERVICES_CACHE' => $storagePath . '/bootstrap/cache/services.php',
+        'APP_PACKAGES_CACHE' => $storagePath . '/bootstrap/cache/packages.php',
+        'APP_CONFIG_CACHE'   => $storagePath . '/bootstrap/cache/config.php',
+        'APP_ROUTES_CACHE'   => $storagePath . '/bootstrap/cache/routes.php',
+        'APP_EVENTS_CACHE'   => $storagePath . '/bootstrap/cache/events.php',
     ];
 
     foreach ($defaults as $key => $value) {
