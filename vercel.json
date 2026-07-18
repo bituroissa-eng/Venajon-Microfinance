@@ -2,17 +2,17 @@
   "version": 2,
   "functions": {
     "api/index.php": {
-      "runtime": "vercel-php@0.8.0"
+      "runtime": "vercel-php@0.8.0",
+      "maxDuration": 30
     }
   },
-  "buildCommand": "node -e \"console.log('Assets pre-built locally, skipping build step')\"",
+  "buildCommand": "php scripts/vercel-setup.php",
+  "outputDirectory": "public",
   "routes": [
     { "src": "/build/(.*)", "dest": "/build/$1" },
     { "src": "/images/(.*)", "dest": "/images/$1" },
-    { "src": "/css/(.*)", "dest": "/css/$1" },
-    { "src": "/js/(.*)", "dest": "/js/$1" },
     { "src": "/favicon.ico", "dest": "/favicon.ico" },
-    { "src": "/favicon.png", "dest": "/favicon.png" },
+    { "src": "/robots.txt", "dest": "/robots.txt" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ]
 }
