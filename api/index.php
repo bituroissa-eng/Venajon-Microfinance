@@ -21,8 +21,23 @@ foreach ($directories as $dir) {
 $_ENV['STORAGE_PATH'] = $storagePath;
 $_SERVER['STORAGE_PATH'] = $storagePath;
 
-if (!file_exists(__DIR__ . '/../.env')) {
-    copy(__DIR__ . '/../.env.example', __DIR__ . '/../.env');
+if (!file_exists(__DIR__ . '/../.env') && file_exists(__DIR__ . '/../.env.example')) {
+    $envContent = file_get_contents(__DIR__ . '/../.env.example');
+    foreach (explode("\n", $envContent) as $line) {
+        $line = trim($line);
+        if ($line && !str_starts_with($line, '#')) {
+            $parts = explode('=', $line, 2);
+            if (count($parts) === 2) {
+                $key = $parts[0];
+                $value = trim($parts[1], '"\'');
+                if (!array_key_exists($key, $_SERVER) && !array_key_exists($key, $_ENV)) {
+                    $_ENV[$key] = $value;
+                    $_SERVER[$key] = $value;
+                    putenv("$key=$value");
+                }
+            }
+        }
+    }
 }
 
 $vercelUrl = isset($_SERVER['VERCEL_URL']) ? $_SERVER['VERCEL_URL'] : (getenv('VERCEL_URL') ?: '');
