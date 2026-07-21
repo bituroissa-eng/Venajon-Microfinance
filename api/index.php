@@ -50,4 +50,16 @@ if ($vercelUrl) {
     $_SERVER['APP_ENV'] = 'production';
 }
 
+if (empty($_ENV['APP_KEY'])) {
+    $fallbackKey = 'base64:cYixN6dk2erzm5LPIYHa6d7ioNc5vGAeE6lIDL6xjLw=';
+    $_ENV['APP_KEY'] = $fallbackKey;
+    $_SERVER['APP_KEY'] = $fallbackKey;
+    putenv('APP_KEY=' . $fallbackKey);
+}
+
+// Force session driver to cookie on Vercel to avoid SQLite read-only issues
+$_ENV['SESSION_DRIVER'] = 'cookie';
+$_SERVER['SESSION_DRIVER'] = 'cookie';
+putenv('SESSION_DRIVER=cookie');
+
 require __DIR__ . '/../public/index.php';
