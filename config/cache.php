@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Str;
 
+$defaultCacheStore = env('CACHE_STORE', 'database');
+
+if (($defaultCacheStore === 'database' || $defaultCacheStore === null) && (env('VERCEL') || env('VERCEL_URL') || env('VERCEL_ENV'))) {
+    $defaultCacheStore = 'file';
+}
+
 return [
 
     /*
@@ -15,7 +21,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_STORE', 'database'),
+    'default' => $defaultCacheStore,
 
     /*
     |--------------------------------------------------------------------------
