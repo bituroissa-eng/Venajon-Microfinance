@@ -70,6 +70,13 @@ if (!file_exists(__DIR__ . '/../.env') && file_exists(__DIR__ . '/../.env.exampl
     }
 }
 
+if (empty($_ENV['APP_KEY']) || !getenv('APP_KEY')) {
+    $fallbackKey = 'base64:cYixN6dk2erzm5LPIYHa6d7ioNc5vGAeE6lIDL6xjLw=';
+    $_ENV['APP_KEY'] = $fallbackKey;
+    $_SERVER['APP_KEY'] = $fallbackKey;
+    putenv('APP_KEY=' . $fallbackKey);
+}
+
 // Ensure Laravel bootstrap cache files don't cause read-only crashes
 $_ENV['APP_SERVICES_CACHE'] = $storagePath . '/framework/cache/services.php';
 $_SERVER['APP_SERVICES_CACHE'] = $storagePath . '/framework/cache/services.php';
