@@ -21,7 +21,37 @@ foreach ($directories as $dir) {
 $_ENV['STORAGE_PATH'] = $storagePath;
 $_SERVER['STORAGE_PATH'] = $storagePath;
 
-if (file_exists(__DIR__ . '/../.env.example') && !file_exists(__DIR__ . '/../.env')) {
+// Force Vercel-compatible cache and session
+$cacheStore = getenv('CACHE_STORE');
+if ($cacheStore === 'y' || $cacheStore === 'database' || !$cacheStore) {
+    $_ENV['CACHE_STORE'] = 'file';
+    $_SERVER['CACHE_STORE'] = 'file';
+    putenv('CACHE_STORE=file');
+}
+
+$_ENV['SESSION_DRIVER'] = 'cookie';
+$_SERVER['SESSION_DRIVER'] = 'cookie';
+putenv('SESSION_DRIVER=cookie');
+
+// If using SQLite, copy the repo database to /tmp so it's readable/writable
+$dbConnection = getenv('DB_CONNECTION') ?: 'sqlite';
+if ($dbConnection === 'sqlite') {
+    $dbDest = $storagePath . '/database.sqlite';
+    if (!file_exists($dbDest)) {
+        $dbSource = __DIR__ . '/../database/database.sqlite';
+        if (file_exists($dbSource)) {
+            copy($dbSource, $dbDest);
+        } else {
+            touch($dbDest);
+        }
+    }
+    $_ENV['DB_DATABASE'] = $dbDest;
+    $_SERVER['DB_DATABASE'] = $dbDest;
+    putenv('DB_DATABASE=' . $dbDest);
+}
+
+// Load .env.example into environment if .env is missing (to provide fallbacks)
+if (!file_exists(__DIR__ . '/../.env') && file_exists(__DIR__ . '/../.env.example')) {
     $envContent = file_get_contents(__DIR__ . '/../.env.example');
     foreach (explode("\n", $envContent) as $line) {
         $line = trim($line);
@@ -40,29 +70,7 @@ if (file_exists(__DIR__ . '/../.env.example') && !file_exists(__DIR__ . '/../.en
     }
 }
 
-$vercelUrl = isset($_SERVER['VERCEL_URL']) ? $_SERVER['VERCEL_URL'] : (getenv('VERCEL_URL') ?: '');
-if ($vercelUrl) {
-    $_ENV['APP_URL'] = 'https://' . $vercelUrl;
-    $_SERVER['APP_URL'] = 'https://' . $vercelUrl;
-    $_ENV['ASSET_URL'] = 'https://' . $vercelUrl;
-    $_SERVER['ASSET_URL'] = 'https://' . $vercelUrl;
-    $_ENV['APP_ENV'] = 'production';
-    $_SERVER['APP_ENV'] = 'production';
-}
-
-if (empty($_ENV['APP_KEY'])) {
-    $fallbackKey = 'base64:cYixN6dk2erzm5LPIYHa6d7ioNc5vGAeE6lIDL6xjLw=';
-    $_ENV['APP_KEY'] = $fallbackKey;
-    $_SERVER['APP_KEY'] = $fallbackKey;
-    putenv('APP_KEY=' . $fallbackKey);
-}
-
-// Force session driver to cookie on Vercel to avoid SQLite read-only issues
-$_ENV['SESSION_DRIVER'] = 'cookie';
-$_SERVER['SESSION_DRIVER'] = 'cookie';
-putenv('SESSION_DRIVER=cookie');
-
-// Move Laravel bootstrap cache files to /tmp
+// Ensure Laravel bootstrap cache files don't cause read-only crashes
 $_ENV['APP_SERVICES_CACHE'] = $storagePath . '/framework/cache/services.php';
 $_SERVER['APP_SERVICES_CACHE'] = $storagePath . '/framework/cache/services.php';
 putenv('APP_SERVICES_CACHE=' . $storagePath . '/framework/cache/services.php');
@@ -70,17 +78,5 @@ putenv('APP_SERVICES_CACHE=' . $storagePath . '/framework/cache/services.php');
 $_ENV['APP_PACKAGES_CACHE'] = $storagePath . '/framework/cache/packages.php';
 $_SERVER['APP_PACKAGES_CACHE'] = $storagePath . '/framework/cache/packages.php';
 putenv('APP_PACKAGES_CACHE=' . $storagePath . '/framework/cache/packages.php');
-
-$_ENV['APP_CONFIG_CACHE'] = $storagePath . '/framework/cache/config.php';
-$_SERVER['APP_CONFIG_CACHE'] = $storagePath . '/framework/cache/config.php';
-putenv('APP_CONFIG_CACHE=' . $storagePath . '/framework/cache/config.php');
-
-$_ENV['APP_ROUTES_CACHE'] = $storagePath . '/framework/cache/routes.php';
-$_SERVER['APP_ROUTES_CACHE'] = $storagePath . '/framework/cache/routes.php';
-putenv('APP_ROUTES_CACHE=' . $storagePath . '/framework/cache/routes.php');
-
-$_ENV['APP_EVENTS_CACHE'] = $storagePath . '/framework/cache/events.php';
-$_SERVER['APP_EVENTS_CACHE'] = $storagePath . '/framework/cache/events.php';
-putenv('APP_EVENTS_CACHE=' . $storagePath . '/framework/cache/events.php');
 
 require __DIR__ . '/../public/index.php';
