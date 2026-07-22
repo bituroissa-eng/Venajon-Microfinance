@@ -18,7 +18,9 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    'driver' => (env('SESSION_DRIVER') && env('SESSION_DRIVER') !== 'database')
+        ? env('SESSION_DRIVER')
+        : ((env('VERCEL') || env('VERCEL_URL') || env('VERCEL_ENV')) ? 'file' : 'database'),
 
     /*
     |--------------------------------------------------------------------------

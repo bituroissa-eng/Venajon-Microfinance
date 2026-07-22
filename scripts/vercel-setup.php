@@ -31,7 +31,7 @@ if (!file_exists($envPath) && file_exists($envExamplePath)) {
 if ($isVercel && file_exists($envPath)) {
     $envContents = file_get_contents($envPath);
     $cacheStore = getenv('CACHE_STORE');
-    if ($cacheStore === false || $cacheStore === 'database') {
+    if ($cacheStore === false || $cacheStore === '' || $cacheStore === 'database') {
         $cacheStore = 'file';
     }
 
@@ -44,10 +44,12 @@ if ($isVercel && file_exists($envPath)) {
         'QUEUE_CONNECTION' => getenv('QUEUE_CONNECTION') ?: 'sync',
     ];
 
-    if (getenv('DB_CONNECTION')) {
-        $defaults['DB_CONNECTION'] = getenv('DB_CONNECTION');
-    } elseif (getenv('DATABASE_URL') || getenv('DB_URL')) {
+    if (getenv('DATABASE_URL') || getenv('DB_URL')) {
         $defaults['DB_CONNECTION'] = 'pgsql';
+    } elseif (getenv('DB_CONNECTION') && getenv('DB_CONNECTION') !== 'sqlite') {
+        $defaults['DB_CONNECTION'] = getenv('DB_CONNECTION');
+    } else {
+        $defaults['DB_CONNECTION'] = 'sqlite';
     }
 
     if (getenv('DB_DATABASE')) {

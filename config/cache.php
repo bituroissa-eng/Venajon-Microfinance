@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Str;
 
-$defaultCacheStore = env('CACHE_STORE', 'database');
+$defaultCacheStore = env('CACHE_STORE');
 
-if (($defaultCacheStore === 'database' || $defaultCacheStore === null) && (env('VERCEL') || env('VERCEL_URL') || env('VERCEL_ENV'))) {
+if (($defaultCacheStore === null || $defaultCacheStore === '' || $defaultCacheStore === 'database') && (env('VERCEL') || env('VERCEL_URL') || env('VERCEL_ENV'))) {
     $defaultCacheStore = 'file';
 }
 
