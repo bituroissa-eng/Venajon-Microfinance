@@ -5,7 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ isset($systemSetting) ? $systemSetting->name : config('app.name', 'Venajon Microfinance') }}</title>
+
+        @if(isset($systemSetting) && $systemSetting->favicon_path)
+            <link rel="icon" type="image/png" href="{{ str_starts_with($systemSetting->favicon_path, 'data:image') ? $systemSetting->favicon_path : asset('storage/' . $systemSetting->favicon_path) }}">
+        @endif
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +32,7 @@
             <div class="hidden lg:flex lg:w-1/2 bg-slate-900 relative items-center justify-center overflow-hidden">
                 <!-- Image Background -->
                 <div class="absolute inset-0">
-                    <img src="{{ asset('images/finance_bg.png') }}" alt="Microfinance Background" class="w-full h-full object-cover opacity-90">
+                    <img src="{{ asset('images/tsh_finance_bg.jpg') }}" alt="Microfinance Background" class="w-full h-full object-cover opacity-90">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent mix-blend-multiply"></div>
                 </div>
                 

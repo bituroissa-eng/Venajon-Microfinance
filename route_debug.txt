@@ -1,0 +1,251 @@
+﻿
+  GET|HEAD        / ........................................ routes/web.php:13
+                  Ôçé web
+  GET|HEAD        borrowers ....... borrowers.index ÔÇ║ BorrowerController@index
+                  Ôçé web
+                  Ôçé auth
+  POST            borrowers ....... borrowers.store ÔÇ║ BorrowerController@store
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        borrowers/create borrowers.create ÔÇ║ BorrowerController@create
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        borrowers/{borrower} borrowers.show ÔÇ║ BorrowerController@show
+                  Ôçé web
+                  Ôçé auth
+  PUT|PATCH       borrowers/{borrower} borrowers.update ÔÇ║ BorrowerController@update
+                  Ôçé web
+                  Ôçé auth
+  DELETE          borrowers/{borrower} borrowers.destroy ÔÇ║ BorrowerController@destroy
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        borrowers/{borrower}/edit borrowers.edit ÔÇ║ BorrowerController@edit
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        confirm-password password.confirm ÔÇ║ Auth\ConfirmablePasswordController@show
+                  Ôçé web
+                  Ôçé auth
+  POST            confirm-password .. Auth\ConfirmablePasswordController@store
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        dashboard .................... dashboard ÔÇ║ routes/web.php:17
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé verified
+  POST            email/verification-notification verification.send ÔÇ║ Auth\EmailVerificationNotificationController@store
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé throttle:6,1
+  GET|HEAD        forgot-password password.request ÔÇ║ Auth\PasswordResetLinkController@create
+                  Ôçé web
+                  Ôçé guest
+  POST            forgot-password password.email ÔÇ║ Auth\PasswordResetLinkController@store
+                  Ôçé web
+                  Ôçé guest
+  GET|HEAD        loan-calculator ........ loan-calculator ÔÇ║ routes/web.php:27
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        loan-categories loan-categories.index ÔÇ║ LoanCategoryController@index
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  POST            loan-categories loan-categories.store ÔÇ║ LoanCategoryController@store
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        loan-categories/create loan-categories.create ÔÇ║ LoanCategoryController@create
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        loan-categories/{loan_category} loan-categories.show ÔÇ║ LoanCategoryController@show
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  PUT|PATCH       loan-categories/{loan_category} loan-categories.update ÔÇ║ LoanCategoryController@update
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  DELETE          loan-categories/{loan_category} loan-categories.destroy ÔÇ║ LoanCategoryController@destroy
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        loan-categories/{loan_category}/edit loan-categories.edit ÔÇ║ LoanCategoryController@edit
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        loan-plans ..... loan-plans.index ÔÇ║ LoanPlanController@index
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  POST            loan-plans ..... loan-plans.store ÔÇ║ LoanPlanController@store
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        loan-plans/create loan-plans.create ÔÇ║ LoanPlanController@create
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        loan-plans/{loan_plan} loan-plans.show ÔÇ║ LoanPlanController@show
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  PUT|PATCH       loan-plans/{loan_plan} loan-plans.update ÔÇ║ LoanPlanController@update
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  DELETE          loan-plans/{loan_plan} loan-plans.destroy ÔÇ║ LoanPlanController@destroy
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        loan-plans/{loan_plan}/edit loan-plans.edit ÔÇ║ LoanPlanController@edit
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        loans ................... loans.index ÔÇ║ LoanController@index
+                  Ôçé web
+                  Ôçé auth
+  POST            loans ................... loans.store ÔÇ║ LoanController@store
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        loans/create .......... loans.create ÔÇ║ LoanController@create
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        loans/{loan} .............. loans.show ÔÇ║ LoanController@show
+                  Ôçé web
+                  Ôçé auth
+  PUT|PATCH       loans/{loan} .......... loans.update ÔÇ║ LoanController@update
+                  Ôçé web
+                  Ôçé auth
+  DELETE          loans/{loan} ........ loans.destroy ÔÇ║ LoanController@destroy
+                  Ôçé web
+                  Ôçé auth
+  POST            loans/{loan}/approve loans.approve ÔÇ║ LoanController@approve
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        loans/{loan}/edit ......... loans.edit ÔÇ║ LoanController@edit
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        login ... login ÔÇ║ Auth\AuthenticatedSessionController@create
+                  Ôçé web
+                  Ôçé guest
+  POST            login ............ Auth\AuthenticatedSessionController@store
+                  Ôçé web
+                  Ôçé guest
+  POST            logout logout ÔÇ║ Auth\AuthenticatedSessionController@destroy
+                  Ôçé web
+                  Ôçé auth
+  PUT             password .. password.update ÔÇ║ Auth\PasswordController@update
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        payments .......... payments.index ÔÇ║ PaymentController@index
+                  Ôçé web
+                  Ôçé auth
+  POST            payments .......... payments.store ÔÇ║ PaymentController@store
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        payments/create . payments.create ÔÇ║ PaymentController@create
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        payments/{payment} .. payments.show ÔÇ║ PaymentController@show
+                  Ôçé web
+                  Ôçé auth
+  PUT|PATCH       payments/{payment} payments.update ÔÇ║ PaymentController@update
+                  Ôçé web
+                  Ôçé auth
+  DELETE          payments/{payment} payments.destroy ÔÇ║ PaymentController@destroy
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        payments/{payment}/edit payments.edit ÔÇ║ PaymentController@edit
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        profile .............. profile.edit ÔÇ║ ProfileController@edit
+                  Ôçé web
+                  Ôçé auth
+  PATCH           profile .......... profile.update ÔÇ║ ProfileController@update
+                  Ôçé web
+                  Ôçé auth
+  DELETE          profile ........ profile.destroy ÔÇ║ ProfileController@destroy
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        register ... register ÔÇ║ Auth\RegisteredUserController@create
+                  Ôçé web
+                  Ôçé guest
+  POST            register ............... Auth\RegisteredUserController@store
+                  Ôçé web
+                  Ôçé guest
+  POST            reset-password password.store ÔÇ║ Auth\NewPasswordController@store
+                  Ôçé web
+                  Ôçé guest
+  GET|HEAD        reset-password/{token} password.reset ÔÇ║ Auth\NewPasswordController@create
+                  Ôçé web
+                  Ôçé guest
+  GET|HEAD        storage/{path} storage.local ÔÇ║ vendor/laravel/framework/src/Illuminate/Filesystem/FilesystemServiceProvider.php:98
+  PUT             storage/{path} storage.local.upload ÔÇ║ vendor/laravel/framework/src/Illuminate/Filesystem/FilesystemServiceProvider.php:106
+  GET|HEAD        system-settings system-settings.index ÔÇ║ SystemSettingController@index
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin
+  POST            system-settings system-settings.store ÔÇ║ SystemSettingController@store
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin
+  GET|HEAD        system-settings/create system-settings.create ÔÇ║ SystemSettingController@create
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin
+  GET|HEAD        system-settings/{system_setting} system-settings.show ÔÇ║ SystemSettingController@show
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin
+  PUT|PATCH       system-settings/{system_setting} system-settings.update ÔÇ║ SystemSettingController@update
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin
+  DELETE          system-settings/{system_setting} system-settings.destroy ÔÇ║ SystemSettingController@destroy
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin
+  GET|HEAD        system-settings/{system_setting}/edit system-settings.edit ÔÇ║ SystemSettingController@edit
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin
+  GET|HEAD        up vendor/laravel/framework/src/Illuminate/Foundation/Configuration/ApplicationBuilder.php:219
+  GET|HEAD        users ................... users.index ÔÇ║ UserController@index
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  POST            users ................... users.store ÔÇ║ UserController@store
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        users/create .......... users.create ÔÇ║ UserController@create
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        users/{user} .............. users.show ÔÇ║ UserController@show
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  PUT|PATCH       users/{user} .......... users.update ÔÇ║ UserController@update
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  DELETE          users/{user} ........ users.destroy ÔÇ║ UserController@destroy
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        users/{user}/edit ......... users.edit ÔÇ║ UserController@edit
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé role:Admin|Manager
+  GET|HEAD        verify-email verification.notice ÔÇ║ Auth\EmailVerificationPromptController
+                  Ôçé web
+                  Ôçé auth
+  GET|HEAD        verify-email/{id}/{hash} verification.verify ÔÇ║ Auth\VerifyEmailController
+                  Ôçé web
+                  Ôçé auth
+                  Ôçé signed
+                  Ôçé throttle:6,1
+
+                                                           Showing [74] routes
+

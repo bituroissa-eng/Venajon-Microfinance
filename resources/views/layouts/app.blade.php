@@ -5,7 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Venajon MFI') }}</title>
+        <title>{{ isset($systemSetting) ? $systemSetting->name : config('app.name', 'Venajon Microfinance') }}</title>
+
+        @if(isset($systemSetting) && $systemSetting->favicon_path)
+            <link rel="icon" type="image/png" href="{{ str_starts_with($systemSetting->favicon_path, 'data:image') ? $systemSetting->favicon_path : asset('storage/' . $systemSetting->favicon_path) }}">
+        @endif
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +38,7 @@
     <body class="font-sans antialiased bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300 relative">
         
         {{-- System Background Image --}}
-        <div class="fixed inset-0 z-[-1] pointer-events-none bg-cover bg-center bg-no-repeat opacity-40 dark:opacity-5 mix-blend-multiply dark:mix-blend-screen" style="background-image: url('{{ asset('images/system-bg.png') }}');"></div>
+        <div class="fixed inset-0 z-[-1] pointer-events-none bg-cover bg-center bg-no-repeat opacity-40 dark:opacity-5 mix-blend-multiply dark:mix-blend-screen" style="background-image: url('{{ asset('images/tsh_finance_bg.jpg') }}');"></div>
 
         {{-- Navigation (sidebar + mobile bars) --}}
         @include('layouts.navigation')

@@ -1,0 +1,80 @@
+﻿</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">This password reset link will expire in 60 minutes.</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">If you did not request a password reset, no further action is required.</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">Regards,<br>
+Venajon Microfinance</p>
+
+
+<table class="subcopy" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; border-top: 1px solid #e4e4e7; margin-top: 25px; padding-top: 25px;">
+<tr>
+<td style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; line-height: 1.5em; margin-top: 0; text-align: left; font-size: 14px;">If you're having trouble clicking the "Reset Password" button, copy and paste the URL below
+into your web browser: <span class="break-all" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; word-break: break-all;"><a href="http://127.0.0.1:8000/reset-password/efc01b9393bf57a428941cff4a4be7b234c1dc9628b90fb27650e2fd012cf771?email=admin%40venajon.co.tz" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #18181b; word-break: break-all;">http://127.0.0.1:8000/reset-password/efc01b9393bf57a428941cff4a4be7b234c1dc9628b90fb27650e2fd012cf771?email=admin%40venajon.co.tz</a></span></p>
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+<table class="footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; margin: 0 auto; padding: 0; text-align: center; width: 570px;">
+<tr>
+<td class="content-cell" align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; line-height: 1.5em; margin-top: 0; color: #a1a1aa; font-size: 12px; text-align: center;">Â© 2026 Venajon Microfinance. All rights reserved.</p>
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+--PubuNTFP--
+  
+[2026-07-15 14:34:11] local.ERROR: Command "test" is not defined.
+
+Did you mean one of these?
+    make:test
+    schedule:test {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"test\" is not defined.
+
+Did you mean one of these?
+    make:test
+    schedule:test at C:/xampp/htdocs/Venajon/vendor/symfony/console/Application.php:759)
+[stacktrace]
+#0 C:/xampp/htdocs/Venajon/vendor/symfony/console/Application.php(298): Symfony/Component/Console/Application->find('test')
+#1 C:/xampp/htdocs/Venajon/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#2 C:/xampp/htdocs/Venajon/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#3 C:/xampp/htdocs/Venajon/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#4 C:/xampp/htdocs/Venajon/artisan(16): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#5 {main}
+"} 
+[2026-07-15 14:43:53] local.ERROR: The "--compact" option does not exist. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): The \"--compact\" option does not exist. at C:/xampp/htdocs/Venajon/vendor/symfony/console/Input/ArgvInput.php:226)
+[stacktrace]
+#0 C:/xampp/htdocs/Venajon/vendor/symfony/console/Input/ArgvInput.php(155): Symfony/Component/Console/Input/ArgvInput->addLongOption('compact', NULL)
+#1 C:/xampp/htdocs/Venajon/vendor/symfony/console/Input/ArgvInput.php(88): Symfony/Component/Console/Input/ArgvInput->parseLongOption('--compact')
+#2 C:/xampp/htdocs/Venajon/vendor/symfony/console/Input/ArgvInput.php(77): Symfony/Component/Console/Input/ArgvInput->parseToken('--compact', true)
+#3 C:/xampp/htdocs/Venajon/vendor/symfony/console/Input/Input.php(53): Symfony/Component/Console/Input/ArgvInput->parse()
+#4 C:/xampp/htdocs/Venajon/vendor/symfony/console/Command/Command.php(295): Symfony/Component/Console/Input/Input->bind(Object(Symfony/Component/Console/Input/InputDefinition))
+#5 C:/xampp/htdocs/Venajon/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#6 C:/xampp/htdocs/Venajon/vendor/symfony/console/Application.php(1117): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#7 C:/xampp/htdocs/Venajon/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Foundation/Console/RouteListCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#8 C:/xampp/htdocs/Venajon/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#9 C:/xampp/htdocs/Venajon/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#10 C:/xampp/htdocs/Venajon/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#11 C:/xampp/htdocs/Venajon/artisan(16): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#12 {main}
+"} 

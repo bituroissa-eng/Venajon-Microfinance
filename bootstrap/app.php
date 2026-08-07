@@ -18,7 +18,13 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->report(function (\Throwable $e) {
+            if (isset($_SERVER['VERCEL_URL']) || getenv('VERCEL')) {
+                echo "--- ORIGINAL EXCEPTION CAUGHT BY REPORTER ---\n";
+                echo $e->getMessage() . "\n";
+                echo $e->getTraceAsString() . "\n\n";
+            }
+        });
     })->create();
 
 $isVercel = isset($_ENV['VERCEL']) || getenv('VERCEL') || isset($_SERVER['VERCEL_URL']) || str_starts_with(__DIR__, '/var/task');

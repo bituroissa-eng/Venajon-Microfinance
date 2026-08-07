@@ -43,10 +43,21 @@
                             <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">System Logo</label>
                             @if($setting->logo_path)
                                 <div class="mb-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 inline-block">
-                                    <img src="{{ asset('storage/' . $setting->logo_path) }}" alt="Logo" class="h-16 w-auto">
+                                    <img src="{{ str_starts_with($setting->logo_path, 'data:image') ? $setting->logo_path : asset('storage/' . $setting->logo_path) }}" alt="Logo" class="h-16 w-auto">
                                 </div>
                             @endif
-                            <input type="file" name="logo"
+                            <input type="file" name="logo" accept="image/*"
+                                class="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-300 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">System Favicon</label>
+                            @if($setting->favicon_path)
+                                <div class="mb-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 inline-block">
+                                    <img src="{{ str_starts_with($setting->favicon_path, 'data:image') ? $setting->favicon_path : asset('storage/' . $setting->favicon_path) }}" alt="Favicon" class="h-8 w-auto">
+                                </div>
+                            @endif
+                            <input type="file" name="favicon" accept="image/*"
                                 class="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-300 hover:file:bg-primary-100 dark:hover:file:bg-primary-900/50 transition">
                         </div>
 

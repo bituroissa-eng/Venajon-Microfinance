@@ -23,15 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (getenv('VERCEL') || getenv('VERCEL_URL') || str_starts_with(config('app.url', ''), 'https')) {
-            $vercelUrl = getenv('VERCEL_URL');
-            $appUrl = $vercelUrl ? 'https://' . $vercelUrl : (config('app.url') ?: env('APP_URL'));
-            
-            // If it's localhost but we are on Vercel (e.g. from .env.example), strip it out so it uses relative/request host
-            if ($appUrl === 'http://localhost' && getenv('VERCEL')) {
-                $appUrl = ''; 
-            }
-            
-            if (! empty($appUrl) && $appUrl !== 'http://localhost') {
+            $appUrl = config('app.url') ?: env('APP_URL');
+            if (! empty($appUrl)) {
                 URL::forceRootUrl(rtrim($appUrl, '/'));
             }
             URL::forceScheme('https');

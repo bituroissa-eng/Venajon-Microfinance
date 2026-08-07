@@ -23,13 +23,17 @@ class SystemSettingController extends Controller
             'name' => 'required|string|max:255',
             'expiry_date' => 'nullable|date',
             'logo' => 'nullable|image|max:2048',
+            'favicon' => 'nullable|image|max:1024',
         ]);
 
         if ($request->hasFile('logo')) {
-            if ($systemSetting->logo_path) {
-                Storage::disk('public')->delete($systemSetting->logo_path);
-            }
-            $validated['logo_path'] = $request->file('logo')->store('system', 'public');
+            $logo = $request->file('logo');
+            $validated['logo_path'] = 'data:' . $logo->getMimeType() . ';base64,' . base64_encode(file_get_contents($logo->getRealPath()));
+        }
+
+        if ($request->hasFile('favicon')) {
+            $favicon = $request->file('favicon');
+            $validated['favicon_path'] = 'data:' . $favicon->getMimeType() . ';base64,' . base64_encode(file_get_contents($favicon->getRealPath()));
         }
 
         $systemSetting->update($validated);
