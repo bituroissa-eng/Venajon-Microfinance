@@ -22,12 +22,9 @@ $_ENV['STORAGE_PATH'] = $storagePath;
 $_SERVER['STORAGE_PATH'] = $storagePath;
 
 // Force Vercel-compatible cache and session
-$cacheStore = getenv('CACHE_STORE');
-if ($cacheStore === 'y' || $cacheStore === 'database' || !$cacheStore) {
-    $_ENV['CACHE_STORE'] = 'file';
-    $_SERVER['CACHE_STORE'] = 'file';
-    putenv('CACHE_STORE=file');
-}
+$_ENV['CACHE_STORE'] = 'file';
+$_SERVER['CACHE_STORE'] = 'file';
+putenv('CACHE_STORE=file');
 
 $_ENV['SESSION_DRIVER'] = 'cookie';
 $_SERVER['SESSION_DRIVER'] = 'cookie';
