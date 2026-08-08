@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 
 $defaultCacheStore = env('CACHE_STORE');
 
-if (($defaultCacheStore === null || $defaultCacheStore === '' || $defaultCacheStore === 'database') && (env('VERCEL') || env('VERCEL_URL') || env('VERCEL_ENV'))) {
+if (env('VERCEL') || env('VERCEL_URL') || env('VERCEL_ENV') || isset($_SERVER['VERCEL'])) {
     $defaultCacheStore = 'file';
 }
 
